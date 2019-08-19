@@ -28,187 +28,55 @@ public class GridDialog {
     public void createDialog() {
         dialog.setLayout(new GridBagLayout());
 
-        SpinnerModel players = new SpinnerNumberModel(2, 1, 4, 1);
-        JSpinner numPlayers = new JSpinner(players);
+        GridBagConstraints c = new GridBagConstraints();
+        c.fill = GridBagConstraints.BOTH;
+        c.gridy = 0;
+        c.gridwidth = 2;
+        c.weightx = 1;
+        c.weighty = 1;
+        c.insets = new Insets(2, 5, 10, 5);
+        JLabel title = new JLabel("Board Size Picker", JLabel.CENTER);
+        title.setFont(new Font(title.getFont().getName(), Font.BOLD, title.getFont().getSize() + 2));
+        dialog.add(title, c);
 
-        GridBagConstraints mainGBC = new GridBagConstraints();
+        c.gridy = 1;
+        c.gridwidth = 1;
+        c.insets = new Insets(2, 5, 2, 5);
+        dialog.add(new JLabel("Name 1:", JLabel.RIGHT), c);
+        dialog.add(name1, c);
 
-        mainGBC.gridy = 0;
-        mainGBC.gridwidth = 2;
-        mainGBC.fill = GridBagConstraints.BOTH;
-        mainGBC.insets = new Insets(2, 5, 2, 5);
-        JLabel numPlayerTitle = new JLabel("Player Picker", JLabel.CENTER);
-        numPlayerTitle.setFont(new Font(numPlayerTitle.getFont().getName(), Font.BOLD, numPlayerTitle.getFont().getSize() + 2));
-        dialog.add(numPlayerTitle, mainGBC);
+        c.gridy = 2;
+        dialog.add(new JLabel("Name 2:", JLabel.RIGHT), c);
+        dialog.add(name2, c);
 
-        mainGBC.gridy = 1;
-        mainGBC.gridwidth = 1;
-        dialog.add(new JLabel("# of Players:"), mainGBC);
-        dialog.add(numPlayers, mainGBC);
+        c.gridy = 3;
+        dialog.add(new JLabel("# of Cards:", JLabel.RIGHT), c);
+        dialog.add(numCards, c);
 
-        mainGBC.gridy = 2;
-        JButton playersOk = new JButton("Ok");
-        playersOk.addActionListener(new ActionListener() {
+        c.gridy = 4;
+        JButton okButton = new JButton("Ok");
+        okButton.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                int players = (Integer)numPlayers.getValue();
-                dialog.getContentPane().removeAll();
-
-                GridBagConstraints c = new GridBagConstraints();
-                c.fill = GridBagConstraints.BOTH;
-                c.gridy = 0;
-                c.gridwidth = 2;
-                c.weightx = 1;
-                c.weighty = 1;
-                c.insets = new Insets(2, 5, 10, 5);
-                JLabel title = new JLabel("Board Size Picker", JLabel.CENTER);
-                title.setFont(new Font(title.getFont().getName(), Font.BOLD, title.getFont().getSize() + 2));
-                dialog.add(title, c);
-
-                c.gridy = 1;
-                c.gridwidth = 1;
-                c.insets = new Insets(2, 5, 2, 5);
-                dialog.add(new JLabel("Name 1:", JLabel.RIGHT), c);
-                dialog.add(name1, c);
-
-                if (players > 1) {
-                    c.gridy = 2;
-                    dialog.add(new JLabel("Name 2:", JLabel.RIGHT), c);
-                    dialog.add(name2, c);
-                }
-
-                c.gridy = players + 1;
-                dialog.add(new JLabel("# of Cards:", JLabel.RIGHT), c);
-                dialog.add(numCards, c);
-
-                c.gridy = players + 2;
-                JButton okButton = new JButton("Ok");
-                okButton.addActionListener(new ActionListener() {
-
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
-                            dialog.getContentPane().removeAll();
-
-                            GridBagConstraints gbc = new GridBagConstraints();
-
-                            gbc.gridy = 0;
-                            gbc.gridwidth = 2;
-                            gbc.fill = GridBagConstraints.BOTH;
-                            gbc.insets = new Insets(2, 5, 2, 5);
-                            JLabel playerTitle = new JLabel("Game Mode Picker", JLabel.CENTER);
-                            playerTitle.setFont(new Font(playerTitle.getFont().getName(), Font.BOLD, playerTitle.getFont().getSize() + 2));
-                            dialog.add(playerTitle, gbc);
-
-                            if (players > 1) {
-                                gbc.gridy = 1;
-                                JButton localMultiplayerButton = new JButton("Local Multiplayer");
-                                localMultiplayerButton.addActionListener(new ActionListener() {
-                                    @Override
-                                    public void actionPerformed(ActionEvent e) {
-                                        new Main(name1.getText(), name2.getText(), factor((Integer)numCards.getValue())[0], factor((Integer)numCards.getValue())[1], players);
-                                        dialog.dispatchEvent(new WindowEvent(dialog, WindowEvent.WINDOW_CLOSING));
-                                    }
-                                });
-                                dialog.add(localMultiplayerButton, gbc);
-
-                                gbc.gridy = 2;
-                                JButton LANMultiplayerButton = new JButton("LAN Multiplayer");
-                                LANMultiplayerButton.addActionListener(new ActionListener() {
-                                    @Override
-                                    public void actionPerformed(ActionEvent e) {
-                                        new Main(name1.getText(), name2.getText(), factor((Integer)numCards.getValue())[0], factor((Integer)numCards.getValue())[1], players);
-                                        dialog.dispatchEvent(new WindowEvent(dialog, WindowEvent.WINDOW_CLOSING));
-                                    }
-                                });
-                                dialog.add(LANMultiplayerButton, gbc);
-
-                                gbc.gridy = 3;
-                                JButton onlineMultiplayerButton = new JButton("Online Multiplayer");
-                                onlineMultiplayerButton.addActionListener(new ActionListener() {
-                                    @Override
-                                    public void actionPerformed(ActionEvent e) {
-
-                                        dialog.dispatchEvent(new WindowEvent(dialog, WindowEvent.WINDOW_CLOSING));
-                                    }
-                                });
-                                dialog.add(onlineMultiplayerButton, gbc);
-                            } else {
-                                gbc.gridy = 1;
-                                JButton singleplayerButton = new JButton("Singleplayer");
-                                singleplayerButton.addActionListener(new ActionListener() {
-                                    @Override
-                                    public void actionPerformed(ActionEvent e) {
-                                        new Main(name1.getText(), name2.getText(), factor((Integer)numCards.getValue())[0], factor((Integer)numCards.getValue())[1], players);
-                                        dialog.dispatchEvent(new WindowEvent(dialog, WindowEvent.WINDOW_CLOSING));
-                                    }
-                                });
-                                dialog.add(singleplayerButton, gbc);
-
-                                gbc.gridy = 2;
-                                JButton comButton = new JButton("Player v. COM");
-                                comButton.addActionListener(new ActionListener() {
-                                    @Override
-                                    public void actionPerformed(ActionEvent e) {
-
-                                        dialog.dispatchEvent(new WindowEvent(dialog, WindowEvent.WINDOW_CLOSING));
-                                    }
-                                });
-                                dialog.add(comButton, gbc);
-                            }
-
-                            if (players > 1) gbc.gridy = 4;
-                            else gbc.gridy = 3;
-                            gbc.gridwidth = 1;
-                            gbc.insets = new Insets(5, 5, 2, 5);
-                            JButton backPlayerButton = new JButton("Back");
-                            backPlayerButton.addActionListener(new ActionListener() {
-                                @Override
-                                public void actionPerformed(ActionEvent e) {
-                                    dialog.dispatchEvent(new WindowEvent(dialog, WindowEvent.WINDOW_CLOSING));
-                                    new GridDialog(name1.getText(), name2.getText(), factor((Integer)numCards.getValue())[0] * factor((Integer)numCards.getValue())[1]);
-                                }
-                            });
-                            dialog.add(backPlayerButton, gbc);
-
-                            JButton cancelPlayerButton = new JButton("Cancel");
-                            cancelPlayerButton.addActionListener(new ActionListener() {
-                                @Override
-                                public void actionPerformed(ActionEvent e) {
-                                    dialog.dispose();
-                                }
-                            });
-                            dialog.add(cancelPlayerButton, gbc);
-
-                            dialog.revalidate();
-                            dialog.repaint();
-                            dialog.pack();
-                        }
-                    });
-                dialog.add(okButton, c);
-
-                c.gridx = 1;
-                JButton cancelButton = new JButton("Cancel");
-                cancelButton.addActionListener(new ActionListener() {
-
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
-                            dialog.dispose();
-                        }
-                    });
-                dialog.add(cancelButton, c);
-
-                dialog.revalidate();
-                dialog.repaint();
-                dialog.pack();
+                new Main(name1.getText(), name2.getText(), factor((Integer)numCards.getValue())[0], factor((Integer)numCards.getValue())[1]);
+                dialog.dispose();
             }
         });
+        dialog.add(okButton, c);
 
-        dialog.add(playersOk, mainGBC);
-        dialog.add(new JButton("Cancel"), mainGBC);
+        c.gridx = 1;
+        JButton cancelButton = new JButton("Cancel");
+        cancelButton.addActionListener(new ActionListener() {
 
-        dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dialog.dispose();
+            }
+        });
+        dialog.add(cancelButton, c);
         dialog.pack();
+        dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         dialog.setVisible(true);
 
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();

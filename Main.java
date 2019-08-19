@@ -47,7 +47,7 @@ public class Main {
         }
     });
 
-    public Main(String name1, String name2, int rows, int cols, int players) {
+    public Main(String name1, String name2, int r, int c) {
         /*try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
@@ -85,11 +85,11 @@ public class Main {
         player2.setText(name2 + ": 0");
 
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        screenSize = new Dimension((int)((((screenSize.getHeight()*4)/5)/rows)*2)/3, (int)((screenSize.getHeight()*4)/5)/rows);
+        screenSize = new Dimension((int)((((screenSize.getHeight()*4)/5)/r)*2)/3, (int)((screenSize.getHeight()*4)/5)/r);
 
-        if (Toolkit.getDefaultToolkit().getScreenSize().getWidth() < ((cols * screenSize.getWidth()) + ((cols + 1) * 5))) {
+        if (Toolkit.getDefaultToolkit().getScreenSize().getWidth() < ((c * screenSize.getWidth()) + ((c + 1) * 5))) {
             screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-            screenSize = new Dimension((int)((screenSize.getWidth()*5)/6)/cols, (int)((((screenSize.getWidth()*5)/6)/cols)*3)/2);
+            screenSize = new Dimension((int)((screenSize.getWidth()*5)/6)/c, (int)((((screenSize.getWidth()*5)/6)/c)*3)/2);
         }
 
         int fontSize;
@@ -105,8 +105,8 @@ public class Main {
 
         Font useFont = new Font(testFont.getFont().getName(), Font.PLAIN, fontSize);
 
-        this.rows = rows;
-        this.cols = cols;
+        rows = r;
+        cols = c;
 
         panels = new JPanel[rows][cols];
         btns = new JButton[rows][cols];
@@ -270,11 +270,11 @@ public class Main {
         }
 
         frame.setLayout(new GridBagLayout());
-        GridBagConstraints c = new GridBagConstraints();
-        c.gridy = 0;
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridy = 0;
 
         frame.add(infoPanel, c);
-        c.gridy = 1;
+        gbc.gridy = 1;
 
         frame.add(panel, c);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
