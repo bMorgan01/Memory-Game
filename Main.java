@@ -54,6 +54,9 @@ public class Main {
             ex.printStackTrace();
         }*/
 
+        rows = r;
+        cols = c;
+
         timerLabel = new JLabel(String.format("%04d:%02d:%02d.%03d", 0, 0, 0, 0));
 
         gameTimer = new Timer(100, new ActionListener() {
@@ -85,11 +88,11 @@ public class Main {
         player2.setText(name2 + ": 0");
 
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        screenSize = new Dimension((int)((((screenSize.getHeight()*4)/5)/r)*2)/3, (int)((screenSize.getHeight()*4)/5)/r);
+        screenSize = new Dimension((int)((((screenSize.getHeight()*4)/5)/rows)*2)/3, (int)((screenSize.getHeight()*4)/5)/rows);
 
-        if (Toolkit.getDefaultToolkit().getScreenSize().getWidth() < ((c * screenSize.getWidth()) + ((c + 1) * 5))) {
+        if (Toolkit.getDefaultToolkit().getScreenSize().getWidth() < ((cols * screenSize.getWidth()) + ((cols + 1) * 5))) {
             screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-            screenSize = new Dimension((int)((screenSize.getWidth()*5)/6)/c, (int)((((screenSize.getWidth()*5)/6)/c)*3)/2);
+            screenSize = new Dimension((int)((screenSize.getWidth()*5)/6)/cols, (int)((((screenSize.getWidth()*5)/6)/cols)*3)/2);
         }
 
         int fontSize;
@@ -104,9 +107,6 @@ public class Main {
         fontSize = Math.min(fontSize, (int)screenSize.getHeight());
 
         Font useFont = new Font(testFont.getFont().getName(), Font.PLAIN, fontSize);
-
-        rows = r;
-        cols = c;
 
         panels = new JPanel[rows][cols];
         btns = new JButton[rows][cols];
@@ -273,10 +273,10 @@ public class Main {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridy = 0;
 
-        frame.add(infoPanel, c);
+        frame.add(infoPanel, gbc);
         gbc.gridy = 1;
 
-        frame.add(panel, c);
+        frame.add(panel, gbc);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
