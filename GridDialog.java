@@ -1,12 +1,13 @@
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import java.io.File;
 
 public class GridDialog {
     private JDialog dialog = new JDialog();
 
     private JTextField name1 = new JTextField("Player 1"), name2 = new JTextField("Player 2");
-    private SpinnerModel cards = new SpinnerNumberModel(12, 6, 100, 2);
+    private SpinnerModel cards = new SpinnerNumberModel(12, 6, (new File("icons").list().length * 2) - 2, 2);
     private JSpinner numCards = new JSpinner(cards);
 
     public GridDialog(String str1, String str2, int cards) {

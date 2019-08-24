@@ -7,6 +7,9 @@ import javax.swing.border.EtchedBorder;
 import java.util.Random;
 import java.io.IOException;
 import java.time.Duration;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 public class Main {
     int rows, cols;
@@ -18,9 +21,7 @@ public class Main {
 
     Random rand = new Random();
 
-    String labelNames[] = {"Car", "Elephant", "Phone", "Tree", "Person", "Computer", "Toy", "Paper", "Book", "Desk", "Bed", "Glasses", "Keyboard", "Ring", "Fan", "Sock", "Sign", "Eraser",
-                           "Pencil", "Bow", "Cat", "Boat", "Fork", "Spoon", "Door", "Clock", "Bottle", "Purse", "Brush", "Camera", "Money", "Bread", "Screw", "Mirror", "Cork", "Sponge",
-                           "Banana", "Bowl", "Tomato", "Key", "Nail", "Hammer", "Chain", "Table", "Towel", "Cord", "Thread", "Chalk", "Baby", "Candy"};
+    String labelNames[] = new String[(new File("icons").list().length * 2) - 2];
 
     JPanel panels[][];
     JButton btns[][];
@@ -54,6 +55,24 @@ public class Main {
             ex.printStackTrace();
         }*/
 
+        File dir = new File("icons");
+        File[] directoryListing = dir.listFiles();
+        String fileName;
+        int extras = 0;
+
+        List<File> temp = Arrays.asList(directoryListing);
+        Collections.shuffle(temp);
+        directoryListing = (File[])temp.toArray();
+
+        for (int i = 0; i < directoryListing.length; i++) {
+            fileName = directoryListing[i].getName();
+            if (fileName.endsWith(".png")) {
+                fileName = fileName.substring(0, fileName.length() - 4);
+                fileName = fileName.substring(0, 1).toUpperCase() + fileName.substring(1);
+                labelNames[i - extras] = fileName;
+            } else extras++;
+        }
+
         rows = r;
         cols = c;
 
@@ -75,7 +94,7 @@ public class Main {
         });
 
         try {
-            player1Turn = new JLabel(new ImageIcon(ImageIO.read(new File("icons\\dot.png")).getScaledInstance(15, 15, java.awt.Image.SCALE_SMOOTH)));
+            player1Turn = new JLabel(new ImageIcon(ImageIO.read(new File("dot.png")).getScaledInstance(15, 15, java.awt.Image.SCALE_SMOOTH)));
             player2Turn = new JLabel(new ImageIcon());
         } catch (IOException e) {
             e.printStackTrace();
@@ -100,6 +119,7 @@ public class Main {
         JLabel testFont = new JLabel();
 
         for (int i = 0; i < (rows*cols)/2; i++) {
+            System.out.println(labelNames[i]);
             if (testFont.getFontMetrics(testFont.getFont()).stringWidth(labelNames[i]) > largestWord) largestWord = testFont.getFontMetrics(testFont.getFont()).stringWidth(labelNames[i]);
         }
 
@@ -316,14 +336,14 @@ public class Main {
 
         if (turn == 1) {
             try {
-                player1Turn.setIcon(new ImageIcon(ImageIO.read(new File("icons\\dot.png")).getScaledInstance(15, 15, java.awt.Image.SCALE_SMOOTH)));
+                player1Turn.setIcon(new ImageIcon(ImageIO.read(new File("dot.png")).getScaledInstance(15, 15, java.awt.Image.SCALE_SMOOTH)));
                 player2Turn.setIcon(new ImageIcon());
             } catch (IOException e) {
                 e.printStackTrace();
             }
         } else {
             try {
-                player2Turn.setIcon(new ImageIcon(ImageIO.read(new File("icons\\dot.png")).getScaledInstance(15, 15, java.awt.Image.SCALE_SMOOTH)));
+                player2Turn.setIcon(new ImageIcon(ImageIO.read(new File("dot.png")).getScaledInstance(15, 15, java.awt.Image.SCALE_SMOOTH)));
                 player1Turn.setIcon(new ImageIcon());
             } catch (IOException e) {
                 e.printStackTrace();
